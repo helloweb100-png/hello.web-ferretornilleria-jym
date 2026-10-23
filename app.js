@@ -140,7 +140,7 @@
     let busy = false;            // true mientras se generan los renders de producto
     let pendingResize = false;
 
-    /* --- Entorno de estudio: softboxes blancos + franja amarilla + azul de marca --- */
+    /* --- Entorno de estudio: softboxes blancos + franja verde + azul de marca --- */
     const makeEnv = () => {
       const pm = new THREE.PMREMGenerator(renderer);
       const s = new THREE.Scene();
@@ -151,7 +151,7 @@
       };
       panel(14, 5, 0xffffff, 7, [0, 10, 3]);      // softbox superior
       panel(4, 14, 0xffffff, 5, [-10, 1, 4]);     // tira izquierda
-      panel(4, 14, 0xffd60a, 4, [10, 0, 3]);      // tira amarilla de marca
+      panel(4, 14, 0x19b94a, 4, [10, 0, 3]);      // tira verde de marca
       panel(14, 4, 0x2f5cff, 2.4, [0, -10, 3]);   // rebote azul inferior
       panel(8, 8, 0xffffff, 2.2, [0, 2, 11]);     // relleno frontal
       panel(3, 12, 0x0a1230, 1, [-6, 0, -9]);     // contraste oscuro (da definición al cromo)
@@ -170,7 +170,8 @@
     const M = {
       steel: metal(0xdfe7f4, 1, 0.2),
       zinc: metal(0xcfdcef, 1, 0.3),
-      yellow: metal(0xf4c20d, 0.9, 0.27),
+      red: metal(0xe8242f, 0.9, 0.27),
+      green: metal(0x24c453, 0.9, 0.27),
       blue: metal(0x2a55d4, 0.85, 0.26),
       phos: metal(0x30343d, 0.6, 0.4),
       navy: metal(0x14307a, 0.55, 0.38),
@@ -368,7 +369,7 @@
       machine: { build: () => makeBolt({ head: 'pan', mat: M.zinc, thread: { len: 4.4, pitch: 0.17, depth: 0.075, neck: 0.05 } }), tilt: -0.85, pitch: 0.5, spin: 0.4 },
       pija: { build: () => makeBolt({ head: 'flat', mat: M.steel, thread: { len: 4.6, pitch: 0.36, depth: 0.2, neck: 0.8, sharp: true, tipLen: 1.2 } }), tilt: -0.8, pitch: 0.5, spin: 0.3 },
       drywall: { build: () => makeBolt({ head: 'bugle', mat: M.phos, thread: { len: 4.8, pitch: 0.27, depth: 0.15, neck: 0.5, sharp: true, tipLen: 1.1 } }), tilt: -0.8, pitch: 0.52, spin: 0.6 },
-      multi: { build: () => makeBolt({ head: 'flat', mat: M.yellow, stamp: true, thread: { len: 4.2, pitch: 0.32, depth: 0.18, neck: 0.6, sharp: true, tipLen: 1.0 } }), tilt: -0.82, pitch: 0.5, spin: 1.1 },
+      multi: { build: () => makeBolt({ head: 'flat', mat: M.green, stamp: true, thread: { len: 4.2, pitch: 0.32, depth: 0.18, neck: 0.6, sharp: true, tipLen: 1.0 } }), tilt: -0.82, pitch: 0.5, spin: 1.1 },
       gota: { build: () => makeBolt({ head: 'gota', mat: M.zinc, thread: { len: 4.0, pitch: 0.2, depth: 0.09, neck: 0.6 } }), tilt: -0.82, pitch: 0.52, spin: 0.8 },
       disc: { build: makeDisc, tilt: -0.35, pitch: 0.95, spin: 0.2 },
       'disc-flat': { build: makeDisc, tilt: 0, pitch: Math.PI / 2 - 0.0, spin: 0, flat: true },
@@ -457,7 +458,7 @@
     // Partículas: tuercas, arandelas y tornillos cortos (InstancedMesh)
     const nParts = small ? 0.55 : 1;
     const specs = [
-      { n: Math.round(4 * nParts), geo: makeNut(M.yellow).geometry, mat: M.yellow, k: 0.34 },
+      { n: Math.round(4 * nParts), geo: makeNut(M.red).geometry, mat: M.red, k: 0.34 },
       { n: Math.round(4 * nParts), geo: makeNut(M.steel).geometry, mat: M.steel, k: 0.3 },
       { n: Math.round(3 * nParts), geo: makeNut(M.blue).geometry, mat: M.blue, k: 0.32 },
       { n: Math.round(6 * nParts), geo: makeWasher(M.steel).geometry, mat: M.steel, k: 0.34 },
@@ -500,8 +501,8 @@
       plate.lineTo(-w + r, w); plate.quadraticCurveTo(-w, w, -w, w - r); plate.lineTo(-w, -w + r); plate.quadraticCurveTo(-w, -w, -w + r, -w);
       plate.holes.push(circlePath(0.58));
       const pm = new THREE.Mesh(extrudeY(plate, 0.22, 0.04, 3), M.navy); pm.position.y = -0.26;
-      const fw = makeWasher(M.yellow, 1.05, 0.6, 0.12); fw.position.y = 0;
-      const fnut = makeNut(M.yellow, 0.866, 0.78, 0.6); fnut.position.y = -1.1;
+      const fw = makeWasher(M.red, 1.05, 0.6, 0.12); fw.position.y = 0;
+      const fnut = makeNut(M.red, 0.866, 0.78, 0.6); fnut.position.y = -1.1;
       const bolt = makeBolt({ head: 'hex', mat: M.steel, stamp: true, thread: { len: 2.9, pitch: 0.2, depth: 0.085, neck: 0.6, tipLen: 0.3 } });
       fin.spin.add(bolt);
       fin.bolt.add(fin.spin);
